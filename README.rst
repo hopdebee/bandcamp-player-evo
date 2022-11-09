@@ -3,9 +3,7 @@ bandcamp-player
 
 streaming random music from bandcamp by specified genre subgenre
 
-![alt text](https://i.imgur.com/weASjYY.png)
-
-![alt text](https://i.imgur.com/0Dc39Lf.gif)
+![](bandcamp-player-evo_demo.gif)
 
 usage
 =====

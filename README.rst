@@ -1,21 +1,11 @@
 bandcamp-player
 ---------------
 
-.. |landscape| image:: https://landscape.io/github/strizhechenko/bandcamp-player/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/strizhechenko/bandcamp-player/master
-   :alt: Code Health
-.. |travis| image:: https://travis-ci.org/strizhechenko/bandcamp-player.svg?branch=master
-   :target: https://travis-ci.org/strizhechenko/bandcamp-player
-.. |pypi| image:: https://badge.fury.io/py/bandcamp-player.svg
-   :target: https://badge.fury.io/py/bandcamp-player
-.. |license| image:: https://img.shields.io/badge/License-MIT-yellow.svg?colorB=green
-   :target: https://opensource.org/licenses/MIT
-.. |pyversions| image:: https://img.shields.io/pypi/pyversions/bandcamp-player.svg?colorB=green
-   :target: https://pypi.python.org/pypi/bandcamp-player
-   
-|landscape| |travis| |pypi| |pyversions| |license|
-
 streaming random music from bandcamp by specified genre subgenre
+
+![alt text](https://i.imgur.com/weASjYY.png)
+
+![alt text](https://i.imgur.com/0Dc39Lf.gif)
 
 usage
 =====
@@ -33,7 +23,7 @@ install bandcamp-fetch (https://github.com/patrickkfkan/bandcamp-fetch ) with
 
 ``npm i bandcamp-fetch --save``
 
-Test it by running ``node /bandcamp-parser/scrape.js "ambient" "drone"``
+Test it by running ``node ~/bandcamp-player-evo/bandcamp_parser/scrape.js "ambient" "drone"``
 
 make sure you are in the folder you downloaded from github
 

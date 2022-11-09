@@ -2,7 +2,6 @@
 import logging
 import sys
 
-from bandcamp_parser.album import Album
 from bandcamp_parser.tag import Tag
 from bandcamp_parser.track import Track
 
@@ -11,12 +10,11 @@ logging.basicConfig(level=logging.INFO)
 
 def loop():
     """ Playing tracks in infinite loop """
-    tag_data = Tag(sys.argv[1])
+    tag_data = Tag(sys.argv[1], sys.argv[2]) 
     while True:
-        album_url = tag_data.album_random().href
-        album = Album(album_url)
-        track_url = album.track_random()
-        track = Track(track_url)
+        album_url = tag_data.album_random()
+        print(f"playing from album {album_url}")
+        track = Track(album_url)
         track.play()
 
 

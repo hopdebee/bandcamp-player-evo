@@ -15,7 +15,7 @@ bandcamp-player
    
 |landscape| |travis| |pypi| |pyversions| |license|
 
-streaming random music from bandcamp by specified tag
+streaming random music from bandcamp by specified genre subgenre
 
 Synopsis
 ========
@@ -32,9 +32,11 @@ Description
 
 bandcamp-player is a small command-line app to stream audio from BandCamp.com. It requires the Python interpreter, version 3.4+ and is not platform specific. It is released to the public domain, which means you can modify it, redistribute it or use it how ever you like. It uses bandcamp-dl project that allow you to download music.
 
-You also need mplayer installed.
+You also need mpv installed.
+You also need node installed (for scrape.js)
+You also need https://github.com/patrickkfkan/bandcamp-fetch (for scrape.js)
 
 Bugs
 ====
 
-Bugs should be reported `here <https://github.com/strizhechenko/bandcamp-player/issues>`_.
+Bugs should be reported in the issues section

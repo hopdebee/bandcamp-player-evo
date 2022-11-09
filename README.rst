@@ -20,12 +20,13 @@ streaming random music from bandcamp by specified genre subgenre
 Synopsis
 ========
 
-``bandcamp-player [TAG]``
+``bandcamp-player-evo [genre] [subgenre]``
+
 
 Installation
 ============
-
-``pip install bandcamp-player``
+``cd bandcamp-player-evo``
+``python setup.py install develop``
 
 Description
 ===========

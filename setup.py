@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(
-    name='bandcamp-player',
+    name='bandcamp-player-evo',
     version='0.0.0',
     packages=['bandcamp_player', 'bandcamp_parser'],
     url='https://github.com/strizhechenko/bandcamp-player',
@@ -22,7 +22,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'bandcamp-player=bandcamp_player.__init__:main',
+            'bandcamp-player-evo=bandcamp_player.__init__:main',
         ],
     },
 )

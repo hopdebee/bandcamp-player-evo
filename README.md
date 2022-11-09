@@ -17,6 +17,8 @@ install node and npm https://nodejs.org/en/download/, tutorial (https://radixweb
 
 install python3.4+
 
+install mpv (https://mpv.io/installation/)
+
 install bandcamp-fetch (https://github.com/patrickkfkan/bandcamp-fetch ) with
 
 ``npm i bandcamp-fetch --save``

@@ -1,5 +1,5 @@
-bandcamp-player
----------------
+bandcamp-player-evo
+============
 
 streaming random music from bandcamp by specified genre subgenre
 

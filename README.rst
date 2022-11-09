@@ -17,24 +17,41 @@ bandcamp-player
 
 streaming random music from bandcamp by specified genre subgenre
 
-Synopsis
-========
+usage
+=====
 
-``bandcamp-player-evo [genre] [subgenre]``
+``bandcamp-player-evo ["genre"] ["sub genre"]``
 
 
 Installation
 ============
+install node and npm https://nodejs.org/en/download/, tutorial (https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac)
+
+install python3.4+
+
+install bandcamp-fetch (https://github.com/patrickkfkan/bandcamp-fetch ) with
+
+``npm i bandcamp-fetch --save``
+
+Test it by running ``node /bandcamp-parser/scrape.js "ambient" "drone"``
+
+make sure you are in the folder you downloaded from github
+
 ``cd bandcamp-player-evo``
-``python setup.py install develop``
+
+install the package
+
+``pip install -e .``
 
 Description
 ===========
 
-bandcamp-player is a small command-line app to stream audio from BandCamp.com. It requires the Python interpreter, version 3.4+ and is not platform specific. It is released to the public domain, which means you can modify it, redistribute it or use it how ever you like. It uses bandcamp-dl project that allow you to download music.
+bandcamp-player is a small command-line app to stream audio from BandCamp.com. It requires the Python interpreter, version 3.4+.
 
 You also need mpv installed.
+
 You also need node installed (for scrape.js)
+
 You also need https://github.com/patrickkfkan/bandcamp-fetch (for scrape.js)
 
 Bugs

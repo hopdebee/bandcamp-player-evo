@@ -5,12 +5,12 @@ streaming random music from bandcamp by specified genre subgenre inspired on htt
 
 ![](bandcamp-player-evo_demo.gif)
 
-usage
+Usage
 =====
 
 ``bandcamp-player-evo ["genre"] ["sub genre"]``
 
-Genres can be found on the bandcamp homepage. Slashes and &'s in the genre name should be replaced by dashes (hip-hop/rap becomes hip-hop-rap r&b/soul becomes r-b-soul). If a certain genre subgenre combo does not work, bandcamp-fetch gets you a random album from the "all" category. You can enter "" as the second argument in order to play from all subgenres of that genre. This equates to "all-genre"
+Genres can be found on the bandcamp homepage. Slashes spaces and &'s in the genre name should be replaced by dashes (hip-hop/rap becomes hip-hop-rap r&b/soul becomes r-b-soul, field recordings becomes field-recordings). If a certain genre subgenre combo does not work, bandcamp-fetch gets you a random album from the "all" category. You can enter "" as the second argument in order to play from all subgenres of that genre. This equates to "all-genre"
 
 MPV
 

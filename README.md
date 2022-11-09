@@ -10,7 +10,7 @@ usage
 
 ``bandcamp-player-evo ["genre"] ["sub genre"]``
 
-Genres can be found on the bandcamp homepage. Slashes and &'s in the genre name should be replaced by dashes (hip-hop/rap becomes hip-hop-rap r&b/soul becomes r-b-soul). If a certain genre subgenre combo does not work, bandcamp-fetch gets you a random album from the "all" category.
+Genres can be found on the bandcamp homepage. Slashes and &'s in the genre name should be replaced by dashes (hip-hop/rap becomes hip-hop-rap r&b/soul becomes r-b-soul). If a certain genre subgenre combo does not work, bandcamp-fetch gets you a random album from the "all" category. You can enter "" as the second argument in order to play from all subgenres of that genre. This equates to "all-genre"
 
 Installation
 ============

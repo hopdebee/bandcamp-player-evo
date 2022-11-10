@@ -14,8 +14,6 @@ class Tag(object):
 
     def albums(self):
         """ :returns: list of Albums from random genre/subgenre page """
-        print(os.getcwd())
-        print("asdfasfdasdf")
         evopath = [path for path in sys.path if "bandcamp-player-evo" in path][0]
         os.system(f"node {evopath}/bandcamp_parser/scrape.js {evopath} {self.genre} {self.subgenre}")
         with open(f"{evopath}/bandcamp_parser/albums.json", encoding='utf-8') as f:

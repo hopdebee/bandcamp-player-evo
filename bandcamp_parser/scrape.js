@@ -21,7 +21,6 @@ const params = {
 
 //get results and store in file
 var fs = require('fs');
-console.log(params["evopath"]);
 bcfetch.discover(params).then( results => {
 
     var json = JSON.stringify(results);

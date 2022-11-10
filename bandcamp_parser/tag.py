@@ -4,6 +4,7 @@ from random import shuffle
 # from bs4 import BeautifulSoup
 import os
 import json
+import sys
 class Tag(object):
     """ Provides access to album list by specified genre/subgenre """
 
@@ -11,11 +12,13 @@ class Tag(object):
         self.genre = genre
         self.subgenre = subgenre
 
-    def albums(self) -> list:
+    def albums(self):
         """ :returns: list of Albums from random genre/subgenre page """
-
-        os.system(f"node /home/heopd/bandcamp-player/bandcamp_parser/scrape.js {self.genre} {self.subgenre}")
-        with open("/home/heopd/bandcamp-player/bandcamp_parser/albums.json", encoding='utf-8') as f:
+        print(os.getcwd())
+        print("asdfasfdasdf")
+        evopath = [path for path in sys.path if "bandcamp-player-evo" in path][0]
+        os.system(f"node {evopath}/bandcamp_parser/scrape.js {evopath} {self.genre} {self.subgenre}")
+        with open(f"{evopath}/bandcamp_parser/albums.json", encoding='utf-8') as f:
             results = json.load(f)
         
         albumurls = [res["url"] for res in results["items"]]
@@ -23,6 +26,7 @@ class Tag(object):
             results["params"]["subgenre"]
         except:
             results["params"]["subgenre"] = "no subgenre"
+
         print(f"picking random album out of {str(len(albumurls))} albums from page {str(results['params']['page'])} in the category {str(results['params']['genre']), str(results['params']['subgenre'])}")
         return albumurls
 

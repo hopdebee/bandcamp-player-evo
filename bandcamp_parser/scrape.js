@@ -23,7 +23,7 @@ var fs = require('fs');
 
 bcfetch.discover(params).then( results => {
     var json = JSON.stringify(results);
-    fs.writeFile("/home/heopd/bandcamp-player/bandcamp_parser/albums.json", json, function(err) {
+    fs.writeFile("albums.json", json, function(err) {
         if (err) {
             console.log(err);
         }

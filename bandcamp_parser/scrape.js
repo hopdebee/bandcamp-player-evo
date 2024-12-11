@@ -4,19 +4,14 @@ const bcfetch = require('bandcamp-fetch');
 bcfetch.cache.setTTL('page', 500);
 bcfetch.cache.setMaxPages(20);
 
-//get random interval
-function randomIntFromInterval(min, max) { // min and max included 
-    return Math.floor(Math.random() * (max - min + 1) + min)
-  }
-  
-const rndInt = randomIntFromInterval(1, 20)
-
 //define what you want and which page 
 const params = {
     evopath: process.argv[2],
     genre: process.argv[3],
     subgenre: process.argv[4],
-    page: rndInt
+    sortBy: "rand",
+    size: 1,
+
 }
 
 //get results and store in file
@@ -30,6 +25,7 @@ bcfetch.discovery.discover(params).then( results => {
         }
     });
 });
+
 
 bcfetch.cache.clear('constant');
 

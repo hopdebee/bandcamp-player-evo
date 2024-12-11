@@ -5,6 +5,7 @@ from random import shuffle
 import os
 import json
 import sys
+import pprint 
 class Tag(object):
     """ Provides access to album list by specified genre/subgenre """
 
@@ -24,8 +25,6 @@ class Tag(object):
             results["params"]["subgenre"]
         except:
             results["params"]["subgenre"] = "no subgenre"
-
-        print(f"picking random album out of {str(len(albumurls))} albums from page {str(results['params']['page'])} in the category {str(results['params']['genre']), str(results['params']['subgenre'])}")
         return albumurls
 
     def album_random(self):# -> AlbumResult:

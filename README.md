@@ -28,9 +28,15 @@ install bandcamp-fetch (https://github.com/patrickkfkan/bandcamp-fetch ) with
 
 ``npm i bandcamp-fetch --save``
 
-Test it by running ``node ~/bandcamp-player-evo/bandcamp_parser/scrape.js "~/bandcamp-player-evo/bandcamp_parser" "ambient" "drone"`` if no error is given and the albums.json file in ``/bandcamp_parser`` has in it's results the correct ambient and drone ``params``, you're good to go.
+``cd`` into the ``bandcamp-player-evo`` folder
 
-make sure you are in the folder you downloaded from github
+assuming you have cloned ``bandcamp-player-evo`` in your home folder:
+
+Test it by running ``node ~/bandcamp-player-evo/bandcamp_parser/scrape.js "." "ambient" "drone"`` if no error is given and the albums.json file in ``/bandcamp_parser`` has in it's results the correct ambient and drone ``params``, you're good to go.
+
+make sure again you are in the folder you downloaded from github
+
+from your home folder: 
 
 ``cd bandcamp-player-evo``
 

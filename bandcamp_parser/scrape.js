@@ -21,7 +21,7 @@ const params = {
 
 //get results and store in file
 var fs = require('fs');
-bcfetch.discover(params).then( results => {
+bcfetch.discovery.discover(params).then( results => {
 
     var json = JSON.stringify(results);
     fs.writeFile(params["evopath"]+"/bandcamp_parser/albums.json", json, function(err) {

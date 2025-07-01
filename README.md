@@ -18,7 +18,7 @@ check https://mpv.io/manual/master/ for keyboard controls of the mpv cli music p
 
 Installation
 ============
-install node and npm https://nodejs.org/en/download/, tutorial (https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac)
+install node and npm https://nodejs.org/en/download/
 
 install python version 3.4 or above+
 

@@ -141,7 +141,7 @@ From the repo folder:
 
 From another machine:
 
-``uvx --from git+https://github.com/<you>/<repo>.git bandcamp-player-evo ambient drone``
+``uvx --from git+https://github.com/hopdebee/bandcamp-player-evo.git bandcamp-player-evo ambient drone``
 
 This requires `uv` and `mpv` to be installed on the target machine.
 

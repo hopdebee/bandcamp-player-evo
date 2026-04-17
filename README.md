@@ -51,7 +51,7 @@ from the repo folder, you can try the packaged CLI without installing it globall
 
 from another machine, point `uvx` at the git repo:
 
-``uvx --from git+https://github.com/<you>/<repo>.git bandcamp-player-evo ambient drone``
+``uvx --from git+https://github.com/hopdebee/bandcamp-player-evo.git bandcamp-player-evo ambient drone``
 
 this requires `uv` and `mpv` to be installed on the target machine.
 

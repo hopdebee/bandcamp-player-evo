@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bandcamp-player-evo"
+version = "0.0.0"
+description = "Utility for streaming random music from bandcamp by specified genre/subgenre"
+readme = "README.md"
+requires-python = ">=3.6"
+license = { text = "MIT" }
+authors = [
+  { name = "helder opdebeeck", email = "helderopdebeeck@gmail.com" },
+]
+dependencies = [
+  "requests",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: End Users/Desktop",
+  "Topic :: Multimedia :: Sound/Audio",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.6",
+]
+
+[project.urls]
+Homepage = "https://github.com/strizhechenko/bandcamp-player"
+
+[project.scripts]
+bandcamp-player-evo = "bandcamp_player.__init__:main"
+
+[tool.setuptools.packages.find]
+include = ["bandcamp_player", "bandcamp_parser"]

@@ -5,6 +5,9 @@ os: linux
 python:
   - "3.6"
 
-install: pip install --upgrade -r requirements.txt
+install:
+  - curl -LsSf https://astral.sh/uv/install.sh | sh
+  - export PATH="$HOME/.local/bin:$PATH"
+  - uv sync
 
-script: python setup.py install
+script: uv run python -m unittest discover -s tests -v

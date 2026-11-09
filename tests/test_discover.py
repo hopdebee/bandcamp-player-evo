@@ -71,6 +71,34 @@ class BuildPayloadTests(unittest.TestCase):
 
 
 class ParseResultsTests(unittest.TestCase):
+    def test_parse_current_api_response(self):
+        batch = discover._parse_discover_batch(
+            {
+                "resultCount": 5,
+                "cursor": "next",
+                "results": [
+                    {"itemUrl": "https://artist.bandcamp.com/album/example?from=discover_page"},
+                    {"itemUrl": "https://artist.bandcamp.com/track/example?from=discover_page"},
+                    {"itemUrl": "https://artist.bandcamp.com/merch/shirt"},
+                    {"bandName": "missing url"},
+                ],
+            },
+            size=2,
+        )
+
+        self.assertEqual(
+            batch,
+            {
+                "urls": [
+                    "https://artist.bandcamp.com/album/example",
+                    "https://artist.bandcamp.com/track/example",
+                ],
+                "result_count": 5,
+                "api_page_count": 3,
+                "cursor": "next",
+            },
+        )
+
     def test_extract_album_urls_ignores_malformed_items(self):
         data = {
             "results": [
@@ -87,6 +115,33 @@ class ParseResultsTests(unittest.TestCase):
 
 
 class DiscoverFallbackTests(unittest.TestCase):
+    def test_current_api_response_succeeds_without_fallback(self):
+        with mock.patch.object(discover.requests, "Session") as session_factory:
+            session = session_factory.return_value.__enter__.return_value
+            session.post.return_value.json.return_value = {
+                "resultCount": 29315,
+                "cursor": "next",
+                "results": [
+                    {"itemUrl": "https://artist.bandcamp.com/album/example?from=discover_page"}
+                ],
+            }
+
+            urls, metadata = discover.discover_album_urls_with_source(
+                "ambient", "field-recordings"
+            )
+
+        self.assertEqual(urls, ["https://artist.bandcamp.com/album/example"])
+        self.assertEqual(metadata["page_label"], "ambient/field-recordings")
+        self.assertEqual(metadata["result_count"], 29315)
+        self.assertEqual(metadata["api_page_count"], 29315)
+        self.assertEqual(metadata["api_requests_made"], 1)
+        session.post.assert_called_once_with(
+            discover.DISCOVER_URL,
+            json=discover._build_payload(["ambient", "field-recordings"]),
+            timeout=discover.REQUEST_TIMEOUT,
+        )
+        session.post.return_value.raise_for_status.assert_called_once_with()
+
     def test_discover_album_urls_with_source_returns_page_label(self):
         with mock.patch.object(
             discover,

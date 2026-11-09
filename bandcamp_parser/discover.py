@@ -75,7 +75,7 @@ def _extract_album_urls(data: dict) -> List[str]:
     """Extract playable Bandcamp item URLs from a Discover response."""
     urls = []
     for item in data.get("results", []):
-        url = _normalize_item_url(item.get("item_url"))
+        url = _normalize_item_url(item.get("itemUrl") or item.get("item_url"))
         if url:
             urls.append(url)
     return urls
@@ -84,7 +84,7 @@ def _extract_album_urls(data: dict) -> List[str]:
 def _parse_discover_batch(data: dict, size: int) -> dict:
     """Parse a discover response into URLs and pagination metadata."""
     urls = _extract_album_urls(data)
-    result_count = int(data.get("result_count") or 0)
+    result_count = int(data.get("resultCount", data.get("result_count")) or 0)
     page_size = max(size, 1)
     api_page_count = int(math.ceil(float(result_count) / float(page_size))) if result_count else 0
     return {

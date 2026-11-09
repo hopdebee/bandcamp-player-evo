@@ -9,9 +9,16 @@ import socket
 import subprocess
 import tempfile
 import time
+from collections import deque
+
+from bandcamp_parser.album import album_stream_tracks
 
 
 MPV_SOCKET_WAIT_SECONDS = 5
+
+
+class PlaybackError(RuntimeError):
+    """mpv could not load or play an audio stream."""
 
 
 class MpvController(object):
@@ -25,6 +32,10 @@ class MpvController(object):
         self.connection = None
         self._request_id = 0
         self._read_buffer = b""
+        self._playlist_path = None
+        self._playback_error = None
+        self._log_messages = deque(maxlen=10)
+        self.has_loaded_file = False
 
     def start(self):
         """Start mpv in idle mode and connect to its IPC socket."""
@@ -41,17 +52,22 @@ class MpvController(object):
                 "--input-default-bindings=no",
                 "--input-vo-keyboard=no",
                 "--audio-display=no",
-                "--msg-level=ipc=v",
+                "--ytdl=no",
                 "--input-ipc-server={0}".format(self.socket_path),
             ],
             stdin=subprocess.DEVNULL,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-        self._wait_for_socket()
-        self.connection = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        self.connection.connect(self.socket_path)
-        self._read_buffer = b""
+        try:
+            self._wait_for_socket()
+            self.connection = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            self.connection.connect(self.socket_path)
+            self._read_buffer = b""
+            self.command("request_log_messages", "warn")
+        except BaseException:
+            self.close()
+            raise
         return self
 
     def close(self):
@@ -78,6 +94,7 @@ class MpvController(object):
             self.process = None
 
         self._cleanup_socket()
+        self._cleanup_playlist()
 
     def command(self, *args):
         """Send an IPC command and return the decoded response."""
@@ -114,12 +131,33 @@ class MpvController(object):
         )
 
     def load(self, url):
-        """Replace the current playlist with a new URL."""
-        self.command("loadfile", url, "replace")
+        """Resolve a release page and load its public streams as a playlist."""
+        tracks = album_stream_tracks(url)
+        self._cleanup_playlist()
+        self._playback_error = None
+        self._log_messages.clear()
+        self.has_loaded_file = False
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", suffix=".m3u8", delete=False
+        ) as playlist:
+            self._playlist_path = playlist.name
+            playlist.write("#EXTM3U\n")
+            for track in tracks:
+                title = " ".join(track["title"].splitlines())
+                playlist.write("#EXTINF:-1,{0}\n{1}\n".format(title, track["url"]))
+        self.command("loadlist", self._playlist_path, "replace")
 
     def is_idle(self):
         """Return whether mpv is idle with no active file loaded."""
-        return bool(self.command("get_property", "idle-active"))
+        idle = bool(self.command("get_property", "idle-active"))
+        if self._playback_error:
+            details = "\n".join(self._log_messages)
+            raise PlaybackError(
+                "mpv playback failed: {0}{1}".format(
+                    self._playback_error, "\n" + details if details else ""
+                )
+            )
+        return idle
 
     def is_alive(self):
         """Return whether the mpv subprocess is still running."""
@@ -140,6 +178,14 @@ class MpvController(object):
             message = self._read_message()
             if message.get("request_id") == request_id:
                 return message
+            if message.get("event") == "file-loaded":
+                self.has_loaded_file = True
+            elif message.get("event") == "log-message":
+                self._log_messages.append(
+                    "[{0}] {1}".format(message.get("prefix", "mpv"), message.get("text", "").strip())
+                )
+            elif message.get("event") == "end-file" and message.get("reason") == "error":
+                self._playback_error = message.get("file_error") or "unknown error"
 
     def _read_message(self):
         while b"\n" not in self._read_buffer:
@@ -163,3 +209,9 @@ class MpvController(object):
     def _cleanup_socket(self):
         if os.path.exists(self.socket_path):
             os.unlink(self.socket_path)
+
+    def _cleanup_playlist(self):
+        if self._playlist_path is not None:
+            if os.path.exists(self._playlist_path):
+                os.unlink(self._playlist_path)
+            self._playlist_path = None

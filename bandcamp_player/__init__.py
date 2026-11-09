@@ -5,13 +5,14 @@ import time
 import sys
 
 from bandcamp_parser.tag import Tag
+from bandcamp_parser.album import AlbumLoadError
 from bandcamp_player.controls import CONTROL_HELP, action_for_key
-from bandcamp_player.player import MpvController
+from bandcamp_player.player import MpvController, PlaybackError
 from bandcamp_player.status import render_progress_line
 from bandcamp_player.terminal import NullInput, TerminalInput
 
 logging.basicConfig(level=logging.INFO)
-LOAD_START_TIMEOUT_SECONDS = 5
+LOAD_START_TIMEOUT_SECONDS = 30
 PROGRESS_REFRESH_SECONDS = 0.25
 
 
@@ -82,19 +83,19 @@ def loop():
     input_router = TerminalInput() if interactive else NullInput()
     if interactive:
         print(CONTROL_HELP)
-    album_loaded_at = _start_next_album(tag_data, player, interactive=interactive)
     has_started_current_album = False
     last_progress_at = 0
 
     try:
+        album_loaded_at = _start_next_album(tag_data, player, interactive=interactive)
         with input_router as terminal:
             while True:
                 if not player.is_alive():
                     raise RuntimeError("mpv exited unexpectedly")
 
                 idle = player.is_idle()
+                has_started_current_album = has_started_current_album or player.has_loaded_file
                 if not idle:
-                    has_started_current_album = True
                     if interactive and time.time() - last_progress_at >= PROGRESS_REFRESH_SECONDS:
                         _show_progress(player)
                         last_progress_at = time.time()
@@ -105,13 +106,15 @@ def loop():
                     has_started_current_album = False
                     last_progress_at = 0
                     continue
-                elif time.time() - album_loaded_at > LOAD_START_TIMEOUT_SECONDS:
-                    album_loaded_at = _start_next_album(
-                        tag_data, player, interactive=interactive
+                if (
+                    not has_started_current_album
+                    and time.time() - album_loaded_at > LOAD_START_TIMEOUT_SECONDS
+                ):
+                    raise PlaybackError(
+                        "mpv did not start playback within {0} seconds".format(
+                            LOAD_START_TIMEOUT_SECONDS
+                        )
                     )
-                    has_started_current_album = False
-                    last_progress_at = 0
-                    continue
 
                 key = terminal.read_key(timeout=0.2)
                 if key is None:
@@ -139,8 +142,11 @@ def main():
     try:
         loop()
     except KeyboardInterrupt:
-        exit(0)
+        return 0
+    except (AlbumLoadError, PlaybackError) as exc:
+        print("error: {0}".format(exc), file=sys.stderr)
+        return 1
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

@@ -58,7 +58,7 @@ At runtime, the CLI:
 
 - prints a sampling summary such as `randomly sampled album from (154398) ambient/drone albums`
 - how many API requests were made, including fallback attempts
-- sends the sampled Bandcamp album URL to a long-lived `mpv` process over JSON IPC
+- reads the release page's public track streams and loads them as an ordered playlist into a long-lived `mpv` process over JSON IPC
 - shows a live in-place progress line with current position, duration, pause state, and track title
 
 Requirements
@@ -67,7 +67,7 @@ Requirements
 - `uv`
 - `mpv`
 
-`mpv` is required because the CLI opens the sampled Bandcamp release URL with it.
+`mpv` plays the audio streams. Python resolves the release page, so `yt-dlp` and `youtube-dl` are not required.
 
 Interactive Controls
 ====================
@@ -94,6 +94,8 @@ Playback keys routed to `mpv` over IPC:
 - `m` mute toggle
 
 When an album finishes, Python detects that `mpv` is idle and automatically samples the next album.
+
+If a release cannot be loaded or a stream fails, the CLI prints the error and stops. It also stops if playback has not started within 30 seconds. Temporary playlists are removed when the player closes.
 
 In an interactive terminal, the player also shows a live status line such as:
 

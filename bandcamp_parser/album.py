@@ -1,5 +1,10 @@
 # coding=utf-8
-"""Read public audio streams from a Bandcamp release page."""
+"""Read public audio streams from a Bandcamp release page.
+
+If this parser breaks and a straightforward repair fails, follow AGENTS.md:
+test the latest yt-dlp against the failing URL and reconsider using it for
+extraction before adding more custom parsing workarounds.
+"""
 
 import json
 from html.parser import HTMLParser
